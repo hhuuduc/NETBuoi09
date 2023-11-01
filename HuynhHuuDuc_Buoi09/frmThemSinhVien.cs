@@ -25,30 +25,25 @@ namespace HuynhHuuDuc_Buoi09
 
         private void btn_Them_Click(object sender, EventArgs e)
         {
-            try
+            int age = DateTime.Today.Year - txt_NgaySinh.Value.Year;
+            if (KT_MaSinhVien(Convert.ToInt32(txt_MaSinhVien.Text)) == true || age > 17)
             {
-                int age = DateTime.Today.Year - txt_NgaySinh.Value.Year;
-                if (KT_MaSinhVien(Convert.ToInt32(txt_MaSinhVien.Text)) == true || age <= 17)
+                if (connsql.State == ConnectionState.Closed)
                 {
-                    if (connsql.State == ConnectionState.Closed)
-                    {
-                        connsql.Open();
-                    }
-                    string insertString;
-                    insertString = "insert into SINHVIEN values('" + txt_MaSinhVien + "', N'" + txt_HoTen + "', '" + txt_NgaySinh + "', '" + txt_MaLop + "')";
-                    SqlCommand cmd = new SqlCommand(insertString, connsql);
-                    cmd.ExecuteNonQuery();
-                    if (connsql.State == ConnectionState.Open)
-                    {
-                        connsql.Close();
-                    }
-                    MessageBox.Show("Thêm thành công!!!");
+                    connsql.Open();
                 }
+                string insertString;
+                insertString = "insert into SINHVIEN values('" + txt_MaSinhVien.Text + "', N'" + txt_HoTen.Text + "', '" + txt_NgaySinh.Value + "', '" + txt_MaLop.Text + "')";
+                SqlCommand cmd = new SqlCommand(insertString, connsql);
+                cmd.ExecuteNonQuery();
+                if (connsql.State == ConnectionState.Open)
+                {
+                    connsql.Close();
+                }
+                MessageBox.Show("Thêm thành công!!!");
             }
-            catch (Exception ex)
-            {
+            else
                 MessageBox.Show("Thêm thất bại!!!");
-            }
         }
 
         bool KT_MaSinhVien(int ma)
